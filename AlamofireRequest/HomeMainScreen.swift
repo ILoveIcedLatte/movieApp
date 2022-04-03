@@ -90,11 +90,6 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        //let sb = UIStoryboard(name: "Main", bundle: nil)
-        //let vc = sb.instantiateViewController(identifier: "detailScreenVC") as! detailScreenVC
-        //self.navigationController?.pushViewController(vc, animated: true)
-        //self.present(detailPage, animated: true, completion: nil)
-        
         let detailPage = Storyboards.main.instantiateViewController(withIdentifier: "detailScreenVC") as! detailScreenVC
             
             detailPage.movieID = (String)(allUpComingDetailModel[indexPath.row].id)
@@ -103,8 +98,7 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
 
         
     }
-    
-    //https://image.tmdb.org/t/p/w500/  3N39KDnL3d6eP6sGvERPRKyQ8PJ.jpg
+
     
     @IBOutlet weak var movieCollectionView: UICollectionView!
 

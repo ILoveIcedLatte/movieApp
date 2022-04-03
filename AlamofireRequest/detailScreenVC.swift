@@ -44,7 +44,7 @@ class detailScreenVC: UIViewController {
         
         print("searchid: \(movieID)")
         
-        getMovieDetails()
+        getMovieDetail()
         getSimilarMovies()
         
     }
@@ -158,120 +158,29 @@ class detailScreenVC: UIViewController {
             
             
             }
-        
-        
-        
-        
-        
-        
-        
     }
     
     
-    
-    
-    
-    func getMovieDetails() {
-        
-        //let baseurl = "http://api.themoviedb.org/3/"
-        let url1 = ServiceConfig.SERVICE_BASE_URL + "movie/\(movieID)"
-        //let apiKey = "8e41e93dd5dac9669ceb8d7fb3c663e1"
-        let param = ["api_key" : ServiceConfig.API_KEY]
-        
-        
-        AF.request(url1, method: .get, parameters: param).responseJSON { (response) in
+    func getMovieDetail() {
+        NetworkUtil.sendRequestforDetail(ServiceConfig.SERVICE_BASE_URL+ServiceConfig.MOVIE_DETAILS+movieID, param: ServiceConfig.PARAM_NOWPLAYING, completionHandler: { film_detail in
             
-            print("the url: \(url1)")
-            //print("JSON: \(response)")
-            //let upcomingJSON = JSON(response.result.value!)
-            //print(upcomingJSON)
-            //print("blabla")
-            //let getFirst = response[0]["maximum"].stringValue
-            //print(getFirst)
+            allFilmDetails = FilmDetailModel(overview: film_detail.overview, title: film_detail.original_title, poster_path: film_detail.poster_path, vote: film_detail.vote_average, date: film_detail.release_date)
             
-            switch response.result
-            {
-             case .success(let data) :
-                print("success")
-                //print(data)
-                let value = JSON(data)
-                //print("the value: \(value)")
-                let resultOverview = value["overview"].stringValue
-                let resultTitle = value["original_title"].stringValue
-                let resultPoster = value["poster_path"].stringValue
-                let resultVote = value["vote_average"].stringValue
-                let DoubleVote = Double(resultVote)
-                let resultVoteFormat:String = String(format: "%.0f", DoubleVote!)
-                
-                let resultDate = value["release_date"].stringValue
-                
-                //let resultVoteFormat = String.localizedStringWithFormat("%.2f", resultVote)
-                //let resultVoteFormat = String(format: "%.01f", resultVote)
-                print("result vote of movie: \(resultVote)")
-                print("result vote after formatting: \(resultVoteFormat)")
-                
-                self.lblMovieTitleName.text = resultTitle
-                self.lblMovieDesc.text = resultOverview
-                self.lblMovieTitle.text = resultTitle
-                self.lblPoint.text = "\(resultVoteFormat)"+"/10"
-                self.lblDateofMovie.text = resultDate
-                
-                let url = URL(string: ServiceConfig.IMAGE_BASE_URL + resultPoster)
-                DispatchQueue.main.async {
-                    if let data = try? Data(contentsOf: url!) {
-                        self.imgViewMoviePoster.image = UIImage(data: data)
-                    }
+            self.lblMovieTitleName.text = allFilmDetails.title
+            self.lblMovieDesc.text = allFilmDetails.overview
+            self.lblMovieTitle.text = allFilmDetails.title
+            self.lblPoint.text = "\(allFilmDetails.vote)"+"/10"
+            self.lblDateofMovie.text = allFilmDetails.date
+            
+            let url = URL(string: ServiceConfig.IMAGE_BASE_URL + allFilmDetails.poster_path)
+            DispatchQueue.main.async {
+                if let data = try? Data(contentsOf: url!) {
+                    self.imgViewMoviePoster.image = UIImage(data: data)
                 }
-                
-                
-                
-                
-                //print("overview esittir : \(resultTitle)")
-                //let resultdata = value["results"]
-                //print(value)
-                //print("resultdata: \(resultdata)")
-                //let resultArray = value["results"]
-                
-                //self.arr_movie_id1.removeAll()
-                //self.arr_movie_title1.removeAll()
-                //self.arr_movie_overview1.removeAll()
-                //self.arr_poster_image1.removeAll()
-                //self.arr_release_date1.removeAll()
-                
-                
-                /*
-                for i in resultArray.arrayValue {
-                    //print(i)
-                    
-                    let movie_id = i["id"].stringValue
-                    self.arr_movie_id1.append(movie_id)
-                    
-                    let movie_name = i["title"].stringValue
-                    self.arr_movie_title1.append(movie_name)
-                    
-                    let movie_overview = i["overview"].stringValue
-                    self.arr_movie_overview1.append(movie_overview)
-                    
-                    let poster_view = i["poster_path"].stringValue
-                    self.arr_poster_image1.append(poster_view)
-                    
-                    let movie_date = i["release_date"].stringValue
-                    self.arr_release_date1.append(movie_date)
-                    
-                } */
-                
-                
-                print("movie titles: \(self.arr_movie_title1)")
-                
-                
-             case . failure(let error) :
-                print("error found \(error)")
             }
             
-            
-            
-            }
-        }
+        })
+    }
     
     
 
