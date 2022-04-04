@@ -21,6 +21,7 @@ public class ServiceConfig {
     public static var MOVIE_NOWPLAYING = "movie/now_playing"
     
     public static var MOVIE_DETAILS = "movie/"
+    public static var MOVIE_SIMILAR = "/similar"
     
     
     

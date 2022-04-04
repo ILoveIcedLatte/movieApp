@@ -14,9 +14,6 @@ import SwiftyJSON
 class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    //var isSearchClicked:Bool = false
-    
-    //let baseImageURL = "https://image.tmdb.org/t/p/w500/"
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 414.0, height: 256.0)
@@ -54,10 +51,6 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
-    
-    //now playing -> collectionview
-    //upcoming -> tableview
-
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allUpComingDetailModel.count
@@ -131,19 +124,14 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
         getNowPlayingMovieDetails()
         
         searchBar.delegate = self
-        //self.movieTableView.delegate = self
-        //self.movieTableView.dataSource = self
         self.movieTableView.rowHeight = 150
 
         
     }
-        // Do any additional setup after loading the view.
     
     func getUpcomingMovieDetails() {
-        let movie = NetworkUtil.sendRequest(ServiceConfig.SERVICE_BASE_URL+ServiceConfig.MOVIE_UPCOMING, param: ServiceConfig.PARAM_UPCOMING, completionHandler: { film_detail in
+        NetworkUtil.sendRequest(ServiceConfig.SERVICE_BASE_URL+ServiceConfig.MOVIE_UPCOMING, param: ServiceConfig.PARAM_UPCOMING, completionHandler: { film_detail in
             
-            if [Film].self != nil {
-                
                 allUpComingDetailModel.removeAll()
                 
                 for i in film_detail {
@@ -157,16 +145,12 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
                 }
 
                 self.movieTableView.reloadData()
-                print("title1:\(allUpComingDetailModel[0].title)")
-            }
         })
     }
     
     func getNowPlayingMovieDetails() {
-        let movie = NetworkUtil.sendRequest(ServiceConfig.SERVICE_BASE_URL+ServiceConfig.MOVIE_NOWPLAYING, param: ServiceConfig.PARAM_NOWPLAYING, completionHandler: { film_detail in
+        NetworkUtil.sendRequest(ServiceConfig.SERVICE_BASE_URL+ServiceConfig.MOVIE_NOWPLAYING, param: ServiceConfig.PARAM_NOWPLAYING, completionHandler: { film_detail in
             
-            if [Film].self != nil {
-                
                 allNowPlayingDetailModel.removeAll()
                 
                 for i in film_detail {
@@ -184,8 +168,6 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
                     
                 }
                 self.movieCollectionView.reloadData()
-                print("title2: \(allNowPlayingDetailModel[0].title)")
-            }
         })
     }
 }

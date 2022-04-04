@@ -26,6 +26,17 @@ struct Film: Codable {
     }
 }
 
+struct FilmSimilar: Codable {
+    var title : String
+    var poster_path : String
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case title = "original_title"
+        case poster_path = "poster_path"
+    }
+}
+
 
 struct FilmDetail : Codable {
     var overview : String
@@ -112,15 +123,35 @@ public class NetworkUtil {
         }
     }
     
-    
-    func nowPlayingRequest() {
+    static func sendRequestforSimilar(_ url: String, param: [String : String], completionHandler: @escaping ([FilmSimilar]) -> ())  {
         
+        AF.request(url, method: .get, parameters: param).responseJSON { (response) in
+            
+            print(url)
+            
+            switch response.result {
+            case .success(let data):
 
+                do {
+                    
+                    let value = JSON(data)
+                    let resultArray = try value[result].rawData()
+                    let film_detail = try JSONDecoder().decode([FilmSimilar].self, from: resultArray)
+                    
+                    
+                    completionHandler(film_detail)
+
+                }
+                catch {print(error)}
+
+            case .failure(let error):
+                print (error)
+            }
+        }
     }
     
-    func upcomingRequest() {
-        
-    }
+    
+
     
     
     

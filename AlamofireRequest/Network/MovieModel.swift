@@ -17,6 +17,11 @@ struct FilmModel {
     var release_date: String
 }
 
+struct FilmSimilarModel {
+    var title: String
+    var poster_path: String
+}
+
 struct FilmDetailModel {
     var overview : String
     var title : String
@@ -27,11 +32,12 @@ struct FilmDetailModel {
 
 var allFilmDetails: FilmDetailModel!
 var allFilmDetailsModel = [FilmDetailModel]()
-var allFilmDetailArrModel : [FilmDetailModel] = [FilmDetailModel]()
 
 var filmDetailModel:FilmModel!
 var allUpComingDetailModel = [FilmModel]()
 var allNowPlayingDetailModel = [FilmModel]()
 
+var filmSimilarModel: FilmSimilarModel!
+var allSimilarFilmArr = [FilmSimilarModel]()
 
 
