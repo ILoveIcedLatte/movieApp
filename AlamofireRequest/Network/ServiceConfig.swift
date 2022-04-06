@@ -23,6 +23,8 @@ public class ServiceConfig {
     public static var MOVIE_DETAILS = "movie/"
     public static var MOVIE_SIMILAR = "/similar"
     
+    public static var MOVIE_SEARCH =  "search/movie"
+    
     
     
 }

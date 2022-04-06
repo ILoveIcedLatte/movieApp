@@ -30,6 +30,12 @@ struct FilmDetailModel {
     var date : String
 }
 
+struct FilmSearchModel {
+    var title : String
+    var id : Int
+}
+
+
 var allFilmDetails: FilmDetailModel!
 var allFilmDetailsModel = [FilmDetailModel]()
 
@@ -40,4 +46,6 @@ var allNowPlayingDetailModel = [FilmModel]()
 var filmSimilarModel: FilmSimilarModel!
 var allSimilarFilmArr = [FilmSimilarModel]()
 
+var filmSearchModel: FilmSearchModel!
+var allSearchFilmArr = [FilmSearchModel]()
 

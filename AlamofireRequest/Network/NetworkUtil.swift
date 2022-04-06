@@ -38,6 +38,19 @@ struct FilmSimilar: Codable {
 }
 
 
+struct FilmSearching: Codable {
+    var title : String
+    var id : Int
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case title = "title"
+        case id = "id"
+    }
+}
+
+
+
 struct FilmDetail : Codable {
     var overview : String
     var original_title: String
@@ -149,6 +162,35 @@ public class NetworkUtil {
             }
         }
     }
+    
+    
+    static func sendRequestforSearch(_ url: String, param: [String : String], completionHandler: @escaping ([FilmSearching]) -> ())  {
+        
+        AF.request(url, method: .get, parameters: param).responseJSON { (response) in
+            
+            switch response.result {
+            case .success(let data):
+
+                do {
+                    
+                    let value = JSON(data)
+                    let resultArray = try value[result].rawData()
+                    let film_detail = try JSONDecoder().decode([FilmSearching].self, from: resultArray)
+                    
+                    
+                    completionHandler(film_detail)
+
+                }
+                catch {print(error)}
+
+            case .failure(let error):
+                print (error)
+            }
+        }
+    }
+    
+    
+    
     
     
 
