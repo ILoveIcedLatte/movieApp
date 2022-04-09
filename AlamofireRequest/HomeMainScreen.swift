@@ -16,7 +16,7 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var searchBar: UISearchBar!
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 414.0, height: 256.0)
+        return CGSize(width: 370.0, height: 256.0)
     }
 
     

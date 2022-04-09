@@ -15,15 +15,7 @@ struct Film: Codable {
     var overview: String
     var poster_path: String
     var release_date: String
-    
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case title = "title"
-        case overview = "overview"
-        case poster_path = "poster_path"
-        case release_date = "release_date"
-    }
+
 }
 
 struct FilmSimilar: Codable {
@@ -41,12 +33,7 @@ struct FilmSimilar: Codable {
 struct FilmSearching: Codable {
     var title : String
     var id : Int
-    
-    
-    enum CodingKeys: String, CodingKey {
-        case title = "title"
-        case id = "id"
-    }
+
 }
 
 
