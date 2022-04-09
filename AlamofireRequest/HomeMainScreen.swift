@@ -14,14 +14,31 @@ import SwiftyJSON
 class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var myPageControl: UIPageControl!
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 370.0, height: 256.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        myPageControl.currentPage = indexPath.row
     }
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return allNowPlayingDetailModel.count
+    }
+    
+    
+    func gradientEffect(imgView: UIImageView) {
+        let shadow = UIColor.black.withAlphaComponent(0.6).cgColor
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor.clear.cgColor, shadow]
+        gradient.startPoint = CGPoint(x:0, y:0)
+        gradient.endPoint = CGPoint(x:1.4, y:1.4)
+        
+        gradient.frame = imgView.bounds
+        imgView.layer.addSublayer(gradient)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -30,20 +47,13 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
         cell.lbltitleCVC.text = allNowPlayingDetailModel[indexPath.row].title
         cell.lblDescCVC.text = allNowPlayingDetailModel[indexPath.row].overview
         
-        let gradient = CAGradientLayer()
-        gradient.frame = cell.imageviewCVC.bounds
-        gradient.colors = [UIColor.clear.cgColor, UIColor.gray.cgColor]
-        gradient.startPoint = CGPoint(x:0, y:0)
-        gradient.endPoint = CGPoint(x:1, y:1)
-        cell.imageviewCVC.layer.addSublayer(gradient)
+        gradientEffect(imgView: cell.imageviewCVC)
         
         let url = URL(string: ServiceConfig.IMAGE_BASE_URL + allNowPlayingDetailModel[indexPath.row].poster_path)
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url!) {
                 DispatchQueue.main.async {
                     cell.imageviewCVC.image = UIImage(data: data)
-                    cell.imageviewCVC.alpha = 0.7
-                    
                 }
         }
         }
@@ -162,11 +172,12 @@ class HomeMainScreen: UIViewController,UITableViewDelegate, UITableViewDataSourc
                                   release_date: i.release_date)
                     )
                 }
+            self.myPageControl.numberOfPages = allNowPlayingDetailModel.count
                 
-                if filmDetailModel != nil {
+                /*if filmDetailModel != nil {
                     allNowPlayingDetailModel.append(filmDetailModel)
                     
-                }
+                }*/
                 self.movieCollectionView.reloadData()
         })
     }
